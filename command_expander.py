@@ -1,4 +1,6 @@
-# Последняя успешная посылка 106842378
+# ID последней посылки 106854392
+OPEN_SQUARE_BRACKET = '['
+MULTIPLER_ORDER_INCREASE = 10
 
 
 def command_expander(in_command: str, num_char: int = 1, calls: int = 0):
@@ -14,11 +16,10 @@ def command_expander(in_command: str, num_char: int = 1, calls: int = 0):
             current_str (str): расшифрованная строка
             index (int): текущий индекс цикла (для рекурсии)
     """
-    open_square_bracket = '['
-    string_zero = '0'
+
     length: int = len(in_command)
     current_str: str = ''
-    current_num: str = ''
+    current_num: int = 0
     index: int = -1
 
     while index < length:
@@ -30,14 +31,14 @@ def command_expander(in_command: str, num_char: int = 1, calls: int = 0):
         item: str = in_command[index]
 
         if item.isdecimal():
-            current_num += item
-        elif item == open_square_bracket:
+            current_num = current_num * MULTIPLER_ORDER_INCREASE + int(item)
+        elif item == OPEN_SQUARE_BRACKET:
             return_str, skip = command_expander(in_command[index + 1:],
-                                                int(current_num),
+                                                current_num,
                                                 calls=calls + 1)
             index += skip
             current_str += return_str
-            current_num = string_zero
+            current_num = 0
         elif item.isalpha():
             current_str += item
         else:
